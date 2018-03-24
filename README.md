@@ -41,15 +41,7 @@ c.) The log table includes one entry for each time a user has accessed the site.
 
   create view view_articles as select title, author, count(*) as views from articles,log where (log.path like concat('%', articles.slug, '%') AND 
   (log.status like '%200%')) group by articles.title,articles.author order by views desc;
-  
-Output::
-  news=> \d view_articles
-  View "public.view_articles"
- Column |  Type   | Modifiers
---------+---------+-----------
- title  | text    |
- author | integer |
- views  | bigint  |
+
 		
 4. Create view 'view_log' using following query:
   
@@ -57,13 +49,6 @@ Output::
   (select date(time) as day, count(log.status) as requests from log where status like '%404%' group by day) as log_perc 
   group by day order by "Error %" desc;
 
-Output::
-   news=> \d view_log
-       View "public.view_log"
-    Column     |  Type   | Modifiers
----------------+---------+-----------
- day           | date    |
- Error %	   | numeric |
  
 # Running the queries: 
 1. From the vagrant directory inside the virtual machine,run summary_tool.py using following command:
